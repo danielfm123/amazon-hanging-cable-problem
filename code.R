@@ -1,4 +1,5 @@
-#Related to video: 
+#Related to video: https://youtu.be/UB99P1piTns
+# Reglated Blog Post: http://www.geekosas.com/?p=2569&preview=true
 
 cuts = 10000
 cable_length = 80
