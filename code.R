@@ -1,18 +1,22 @@
-poles_heigth = 50
-cable_heigth = 20
-cable_length = 80
-cuts = 10000
+#Related to video: 
 
-block_length = function(x,dx,a){
-  sqrt(1 + (2*a*x)^2)*dx
+cuts = 10000
+cable_length = 80
+
+block_length = function(x,dx,d){
+  sqrt(dx^2 + (30*(2*x*dx+dx^2)/d^2)^2)
 }
 
-total_cable_length = function(poles_dist){
-  half_dist = poles_dist/2
-  a = (poles_heigth-cable_heigth)/(half_dist^2)
+# Formula con la integral
+# block_length = function(x,dx,d){
+#   sqrt(dx^2 + (30*2*x*dx/d^2)^2)
+# }
 
-  x = seq(from = 0, to = half_dist, length = cuts+1)
-  2*sum(block_length(x,poles_dist/cuts/2,a))
+total_cable_length = function(poles_dist){
+  d = poles_dist/2
+  
+  x = seq(from = 0, to = d, length = cuts+1)
+  2*sum(block_length(x,d/cuts,d))
 }
 
 error = function(poles_dist){
@@ -20,16 +24,11 @@ error = function(poles_dist){
 }
 
 sol = optimise(error,c(0,cable_length))$minimum
+sol
 
 print("Distance Between Poles")
 print(sol)
 print("Cable Length")
 total_cable_length(sol)
 
-print("Validation")
-#validate with triangular shape approximation, should be shorter
-print("Triangular Shape, Lower Bound")
-2*sqrt((sol/2)^2+(poles_heigth-cable_heigth)^2)
-#validate with square shape approximation, should be bigger
-print("Square Shape Upper Bound")
-2*(poles_heigth-cable_heigth) + sol
+
